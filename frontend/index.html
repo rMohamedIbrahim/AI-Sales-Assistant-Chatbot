@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceBot Enterprise - AI Sales Assistant</title>
+    <meta name="description" content="Advanced AI-powered voice assistant for two-wheeler sales management with real-time analytics and multilingual support">
+    <meta name="keywords" content="voice assistant, two wheeler, sales, AI, analytics, CRM, inventory">
+    <meta name="author" content="VoiceBot Enterprise">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="VoiceBot Pro">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/styles.css">
+    
+    <!-- Fonts and Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas for chart capture -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>VoiceBot Enterprise</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p>Initializing AI Assistant...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span class="brand-text">VoiceBot Enterprise</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard" onclick="if(window.app) app.switchSection('dashboard'); return false;">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#assistant" class="nav-item" data-section="assistant" onclick="if(window.app) app.switchSection('assistant'); return false;">
+                    <i class="fas fa-microphone-alt"></i>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="#analytics" class="nav-item" data-section="analytics" onclick="if(window.app) app.switchSection('analytics'); return false;">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#customers" class="nav-item" data-section="customers" onclick="if(window.app) app.switchSection('customers'); return false;">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+                <a href="#inventory" class="nav-item" data-section="inventory" onclick="if(window.app) app.switchSection('inventory'); return false;">
+                    <i class="fas fa-motorcycle"></i>
+                    <span>Inventory</span>
+                </a>
+                <a href="#reports" class="nav-item" data-section="reports" onclick="if(window.app) app.switchSection('reports'); return false;">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#settings" class="nav-item" data-section="settings" onclick="if(window.app) app.switchSection('settings'); return false;">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="notification-bell" onclick="app.showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">System Online</span>
+                </div>
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="window.app ? app.toggleProfileMenu() : alert('App loading...')">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='30' r='20' fill='%234f46e5'/%3E%3Cpath d='M50 55c-25 0-40 15-40 30v15h80V85c0-15-15-30-40-30z' fill='%234f46e5'/%3E%3C/svg%3E" alt="Profile" class="profile-avatar">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="profile-info">
+                            <h4>Admin User</h4>
+                            <p>admin@voicebot.com</p>
+                        </div>
+                        <hr>
+                        <a href="#" onclick="app.showProfile()">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <a href="#" onclick="app.switchSection('settings')">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <a href="#" onclick="app.showHelp()">
+                            <i class="fas fa-question-circle"></i> Help
+                        </a>
+                        <a href="#" onclick="app.logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h1>AI Sales Assistant Dashboard</h1>
+                <p>Intelligent Two-Wheeler Sales & Customer Service Platform</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon conversations">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalConversations">1,247</h3>
+                        <p>Total Conversations</p>
+                        <span class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +12.5%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon leads">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalLeads">387</h3>
+                        <p>Qualified Leads</p>
+                        <span class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +8.3%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalRevenue">₹24.6L</h3>
+                        <p>Revenue Generated</p>
+                        <span class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +15.7%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon satisfaction">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="satisfaction">94.2%</h3>
+                        <p>Customer Satisfaction</p>
+                        <span class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +2.1%
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="actions-grid">
+                    <button class="action-card" data-action="start-conversation" onclick="if(window.app) app.handleQuickAction('start-conversation'); else alert('Loading...');">
+                        <div class="action-icon voice">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <h3>Start Voice Chat</h3>
+                        <p>Begin conversation with AI assistant</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+
+                    <button class="action-card" data-action="view-analytics" onclick="if(window.app) app.handleQuickAction('view-analytics'); else alert('Loading...');">
+                        <div class="action-icon analytics">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>View Analytics</h3>
+                        <p>Sales performance and insights</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+
+                    <button class="action-card" data-action="manage-customers" onclick="if(window.app) app.handleQuickAction('manage-customers'); else alert('Loading...');">
+                        <div class="action-icon customers">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Manage Customers</h3>
+                        <p>View and manage customer database</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+
+                    <button class="action-card" data-action="inventory-check" onclick="if(window.app) app.handleQuickAction('inventory-check'); else alert('Loading...');">
+                        <div class="action-icon inventory">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <h3>Check Inventory</h3>
+                        <p>Monitor bike stock and availability</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+
+                    <button class="action-card" data-action="generate-report" onclick="if(window.app) app.handleQuickAction('generate-report'); else alert('Loading...');">
+                        <div class="action-icon reports">
+                            <i class="fas fa-file-chart-line"></i>
+                        </div>
+                        <h3>Generate Reports</h3>
+                        <p>Create sales and performance reports</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+
+                    <button class="action-card" data-action="system-settings" onclick="if(window.app) app.handleQuickAction('system-settings'); else alert('Loading...');">
+                        <div class="action-icon settings">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>System Settings</h3>
+                        <p>Configure AI and system preferences</p>
+                        <div class="action-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h1>Dashboard</h1>
+                <p>Welcome to VoiceBot Enterprise Dashboard</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3>Total Conversations</h3>
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-change positive">+12% this week</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3>Leads Generated</h3>
+                        <div class="stat-number">89</div>
+                        <div class="stat-change positive">+8% this week</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <h3>Revenue</h3>
+                        <div class="stat-number">₹52,400</div>
+                        <div class="stat-change positive">+15% this week</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">😊</div>
+                    <div class="stat-content">
+                        <h3>Satisfaction</h3>
+                        <div class="stat-number">96%</div>
+                        <div class="stat-change positive">+2% this week</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Business Insights Widget -->
+            <div class="insights-widget">
+                <div class="widget-header">
+                    <h3>🧠 AI Business Insights</h3>
+                    <button onclick="if(window.app) app.refreshInsights()" class="refresh-btn">🔄</button>
+                </div>
+                <div class="insights-list" id="insightsList">
+                    <div class="insight-item">📊 Loading intelligent recommendations...</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Panel -->
+            <div class="quick-actions-panel">
+                <h3>⚡ Voice Commands</h3>
+                <div class="voice-commands-grid">
+                    <button onclick="if(window.app) app.executeVoiceCommand('show analytics')" class="voice-cmd-btn">
+                        📊 "Show Analytics"
+                    </button>
+                    <button onclick="if(window.app) app.executeVoiceCommand('refresh data')" class="voice-cmd-btn">
+                        🔄 "Refresh Data"
+                    </button>
+                    <button onclick="if(window.app) app.executeVoiceCommand('generate report')" class="voice-cmd-btn">
+                        📋 "Generate Report"
+                    </button>
+                    <button onclick="if(window.app) app.executeVoiceCommand('dark mode')" class="voice-cmd-btn">
+                        🌙 "Dark Mode"
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customers Section -->
+        <section id="customers" class="content-section">
+            <div class="section-header">
+                <h1>Customer Management</h1>
+                <p>Manage your customer interactions and data</p>
+            </div>
+            <div class="customers-content">
+                <div class="placeholder-content">
+                    <i class="fas fa-users fa-3x"></i>
+                    <h3>Customer Management Coming Soon</h3>
+                    <p>Advanced customer relationship management features are under development.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Section -->
+        <section id="inventory" class="content-section">
+            <div class="section-header">
+                <h1>Inventory Management</h1>
+                <p>Track your two-wheeler inventory and stock levels</p>
+            </div>
+            <div class="inventory-content">
+                <div class="placeholder-content">
+                    <i class="fas fa-motorcycle fa-3x"></i>
+                    <h3>Inventory System Coming Soon</h3>
+                    <p>Comprehensive inventory tracking and management features are under development.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="content-section">
+            <div class="section-header">
+                <h1>Reports & Insights</h1>
+                <p>Generate detailed reports and business insights</p>
+            </div>
+            <div class="reports-content">
+                <div class="placeholder-content">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                    <h3>Advanced Reports Coming Soon</h3>
+                    <p>Detailed reporting and analytics features are under development.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant Section -->
+        <section id="assistant" class="content-section">
+            <div class="section-header">
+                <h1>AI Voice Assistant</h1>
+                <p>Enterprise-grade conversational AI for sales and customer service</p>
+            </div>
+
+            <div class="assistant-container">
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <div class="panel-header">
+                        <h3>Assistant Controls</h3>
+                        <div class="ai-status">
+                            <span class="status-indicator active"></span>
+                            <span>AI Ready</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Language</label>
+                        <select id="languageSelect" class="premium-select">
+                            <option value="en-IN">🇮🇳 English (India)</option>
+                            <option value="hi-IN">🇮🇳 हिंदी (Hindi)</option>
+                            <option value="ta-IN">🇮🇳 தமிழ் (Tamil)</option>
+                            <option value="te-IN">🇮🇳 తెలుగు (Telugu)</option>
+                            <option value="mr-IN">🇮🇳 मराठी (Marathi)</option>
+                            <option value="gu-IN">🇮🇳 ગુજરાતી (Gujarati)</option>
+                            <option value="bn-IN">🇮🇳 বাংলা (Bengali)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Voice Settings</label>
+                        <div class="voice-controls">
+                            <div class="control-row">
+                                <span>Speed</span>
+                                <input type="range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="1">
+                            </div>
+                            <div class="control-row">
+                                <span>Pitch</span>
+                                <input type="range" id="voicePitch" min="0.5" max="2" step="0.1" value="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="system-metrics">
+                        <h4>System Performance</h4>
+                        <div class="metric-item">
+                            <span>Response Time</span>
+                            <span class="metric-value">127ms</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Accuracy</span>
+                            <span class="metric-value">98.7%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Uptime</span>
+                            <span class="metric-value">99.9%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Interface -->
+                <div class="chat-interface">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <div class="ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="title-content">
+                                <h3>VoiceBot AI Assistant</h3>
+                                <p id="chatStatus">Ready for conversation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-controls">
+                            <button class="control-btn" onclick="clearChat()">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="control-btn" onclick="exportChat()">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="control-btn" onclick="toggleFullscreen()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message-group ai-group">
+                            <div class="message-header">
+                                <div class="message-avatar ai-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <span class="message-sender">VoiceBot AI</span>
+                                <span class="message-time">Now</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-bubble ai-bubble">
+                                    <h4>Welcome to VoiceBot Enterprise! 🚀</h4>
+                                    <p>I'm your AI-powered sales assistant specializing in two-wheelers. I can help you with:</p>
+                                    <ul class="feature-list">
+                                        <li><i class="fas fa-motorcycle"></i> Product information and comparisons</li>
+                                        <li><i class="fas fa-rupee-sign"></i> Pricing and EMI calculations</li>
+                                        <li><i class="fas fa-calendar"></i> Test ride scheduling</li>
+                                        <li><i class="fas fa-tools"></i> Service and maintenance</li>
+                                        <li><i class="fas fa-percentage"></i> Current offers and promotions</li>
+                                    </ul>
+                                    <p><strong>How can I assist you today?</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-section">
+                        <div class="quick-suggestions">
+                            <button class="suggestion-chip" onclick="askQuestion('What bikes do you have under 1 lakh?')">
+                                💰 Bikes under ₹1L
+                            </button>
+                            <button class="suggestion-chip" onclick="askQuestion('I want to book a test ride')">
+                                🏍️ Book Test Ride
+                            </button>
+                            <button class="suggestion-chip" onclick="askQuestion('What are the EMI options?')">
+                                📊 EMI Options
+                            </button>
+                            <button class="suggestion-chip" onclick="askQuestion('Tell me about service packages')">
+                                🔧 Service Packages
+                            </button>
+                        </div>
+
+                        <div class="input-container">
+                            <button class="voice-button" id="voiceBtn" onclick="toggleVoiceRecording()">
+                                <div class="voice-icon">
+                                    <i class="fas fa-microphone" id="micIcon"></i>
+                                </div>
+                                <div class="voice-waves">
+                                    <span class="wave"></span>
+                                    <span class="wave"></span>
+                                    <span class="wave"></span>
+                                </div>
+                            </button>
+                            
+                            <div class="text-input-wrapper">
+                                <input type="text" id="textInput" placeholder="Type your message or click the microphone to speak..." />
+                                <button class="send-button" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+            <div class="section-header">
+                <h1>Analytics & Insights</h1>
+                <p>Comprehensive performance metrics and business intelligence</p>
+            </div>
+
+            <div class="analytics-grid">
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h4>📈 Monthly Sales Trend</h4>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h4>🏍️ Top Models Performance</h4>
+                        <canvas id="modelsChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h4>📊 Quarterly Distribution</h4>
+                        <canvas id="quarterlyChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h4>💰 Revenue Breakdown</h4>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="analytics-actions">
+                    <button class="pdf-generate-btn" onclick="voiceBotApp.generateAdvancedPDFReport()">
+                        📊 Generate Advanced PDF Report with Charts
+                    </button>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Language Distribution</h3>
+                    </div>
+                    <div class="language-stats">
+                        <div class="lang-stat">
+                            <span class="lang-name">English</span>
+                            <div class="lang-bar">
+                                <div class="lang-fill" style="width: 65%"></div>
+                            </div>
+                            <span class="lang-percent">65%</span>
+                        </div>
+                        <div class="lang-stat">
+                            <span class="lang-name">Hindi</span>
+                            <div class="lang-bar">
+                                <div class="lang-fill" style="width: 20%"></div>
+                            </div>
+                            <span class="lang-percent">20%</span>
+                        </div>
+                        <div class="lang-stat">
+                            <span class="lang-name">Tamil</span>
+                            <div class="lang-bar">
+                                <div class="lang-fill" style="width: 8%"></div>
+                            </div>
+                            <span class="lang-percent">8%</span>
+                        </div>
+                        <div class="lang-stat">
+                            <span class="lang-name">Others</span>
+                            <div class="lang-bar">
+                                <div class="lang-fill" style="width: 7%"></div>
+                            </div>
+                            <span class="lang-percent">7%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="content-section">
+            <div class="section-header">
+                <h1>System Settings</h1>
+                <p>Configure your VoiceBot Enterprise installation</p>
+            </div>
+
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>API Configuration</h3>
+                    <div class="setting-item">
+                        <label>Backend URL</label>
+                        <input type="text" value="http://localhost:8000" readonly>
+                    </div>
+                    <div class="setting-item">
+                        <label>API Status</label>
+                        <span class="status-badge online">Connected</span>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Voice Settings</h3>
+                    <div class="setting-item">
+                        <label>Speech Recognition</label>
+                        <span class="status-badge online">Available</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>Text-to-Speech</label>
+                        <span class="status-badge online">Available</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-language"></i>
+                    <h3>Multi-Language Support</h3>
+                    <p>Supports 7+ Indian languages including Hindi, Tamil, Telugu, Marathi, and more</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI-Powered Responses</h3>
+                    <p>Intelligent conversation flow with natural language understanding</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>24/7 Availability</h3>
+                    <p>Round-the-clock customer service without human intervention</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Cross-Platform</h3>
+                    <p>Works on any device with a web browser - desktop, mobile, tablet</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track customer interactions and improve sales performance</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & Private</h3>
+                    <p>End-to-end encryption and privacy-focused design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2>Interactive Voice Demo</h2>
+            <div class="demo-container">
+                <div class="chat-interface">
+                    <div class="chat-header">
+                        <div class="status-indicator">
+                            <span class="status-dot" id="statusDot"></span>
+                            <span id="statusText">Ready to Chat</span>
+                        </div>
+                        <div class="language-selector">
+                            <select id="languageSelect">
+                                <option value="en-IN">English (India)</option>
+                                <option value="hi-IN">हिंदी (Hindi)</option>
+                                <option value="ta-IN">தமிழ் (Tamil)</option>
+                                <option value="te-IN">తెలుగు (Telugu)</option>
+                                <option value="mr-IN">मराठी (Marathi)</option>
+                                <option value="gu-IN">ગુજરાતી (Gujarati)</option>
+                                <option value="bn-IN">বাংলা (Bengali)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm your Two-Wheeler Sales Assistant. I can help you with:</p>
+                                <ul>
+                                    <li>🏍️ Information about bikes and scooters</li>
+                                    <li>💰 Pricing and offers</li>
+                                    <li>📅 Test ride bookings</li>
+                                    <li>🔧 Service appointments</li>
+                                    <li>📋 EMI calculations</li>
+                                </ul>
+                                <p>How can I assist you today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()">
+                            <i class="fas fa-microphone" id="micIcon"></i>
+                        </button>
+                        <input type="text" id="textInput" placeholder="Type your message or click the microphone to speak...">
+                        <button class="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-info">
+                    <h3>Try These Sample Questions:</h3>
+                    <div class="sample-questions">
+                        <button class="sample-btn" onclick="askSampleQuestion('What bikes do you have under 1 lakh?')">
+                            What bikes do you have under 1 lakh?
+                        </button>
+                        <button class="sample-btn" onclick="askSampleQuestion('I want to book a test ride')">
+                            I want to book a test ride
+                        </button>
+                        <button class="sample-btn" onclick="askSampleQuestion('What are the EMI options?')">
+                            What are the EMI options?
+                        </button>
+                        <button class="sample-btn" onclick="askSampleQuestion('Tell me about service packages')">
+                            Tell me about service packages
+                        </button>
+                    </div>
+                    
+                    <div class="api-status">
+                        <h4>System Status</h4>
+                        <div class="status-item">
+                            <span class="status-label">Backend API:</span>
+                            <span class="status-value" id="apiStatus">Checking...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Speech Recognition:</span>
+                            <span class="status-value" id="speechStatus">Checking...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Text-to-Speech:</span>
+                            <span class="status-value" id="ttsStatus">Checking...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>rmohamedibrahim1@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+91 XXXXX XXXXX</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>India</span>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Send Message</h3>
+                    <form>
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>VoiceBot Assistant</h3>
+                    <p>Revolutionizing two-wheeler sales with AI-powered voice technology.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="http://localhost:8000/docs">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Technology</h3>
+                    <ul>
+                        <li>FastAPI Backend</li>
+                        <li>Google Speech API</li>
+                        <li>Multi-language Support</li>
+                        <li>Real-time Processing</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VoiceBot Assistant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Libraries for PDF Generation and Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
+    <!-- Main Application Script -->
+    <script src="/static/script.js"></script>
+</body>
+</html>

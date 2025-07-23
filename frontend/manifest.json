@@ -1,0 +1,56 @@
+{
+  "name": "VoiceBot Enterprise - Two Wheeler Sales AI",
+  "short_name": "VoiceBot Pro",
+  "description": "Advanced AI-powered voice assistant for two-wheeler sales management with real-time analytics and multilingual support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e40af",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiMyNTYzZWIiLz48cGF0aCBkPSJNMTYgOGE2IDYgMCAwIDAgMCAxMiA2IDYgMCAwIDAgMC0xMnoiIGZpbGw9IndoaXRlIi8+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiMyNTYzZWIiLz48cGF0aCBkPSJNMTYgOGE2IDYgMCAwIDAgMCAxMiA2IDYgMCAwIDAgMC0xMnoiIGZpbGw9IndoaXRlIi8+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "features": [
+    "voice-recognition",
+    "real-time-analytics",
+    "multilingual-support",
+    "offline-capable",
+    "cross-platform"
+  ],
+  "shortcuts": [
+    {
+      "name": "Analytics Dashboard",
+      "short_name": "Analytics",
+      "description": "View real-time business analytics",
+      "url": "/?section=analytics",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMyAzdjE4aDM4IiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0xMyA5IDMgM0wyMCA2IiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Voice Assistant",
+      "short_name": "Voice",
+      "description": "Start voice conversation",
+      "url": "/?section=assistant",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMWE0IDQgMCAwIDEgNCA0djZhNCA0IDAgMCAxLTggMFY1YTQgNCAwIDAgMSA0LTR6IiBmaWxsPSIjMjU2M2ViIi8+PC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

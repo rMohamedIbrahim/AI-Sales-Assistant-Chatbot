@@ -1,0 +1,44 @@
+# Web Framework
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+
+# Core Dependencies
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database (SQLite only - no MySQL)
+aiosqlite==0.19.0
+sqlalchemy==2.0.21
+
+# Speech Recognition & TTS (Free APIs)
+SpeechRecognition==3.10.0
+gTTS==2.4.0
+pyttsx3==2.90
+
+# Language Processing
+langdetect==1.0.9
+vaderSentiment==3.3.2
+
+# HTTP Client
+httpx==0.25.2
+aiofiles==23.2.1
+
+# Email (Free SMTP)
+aiosmtplib==3.0.1
+
+# Caching & Storage
+diskcache==5.6.3
+
+# Monitoring & Logging
+prometheus-client==0.19.0
+
+# Audio Processing (optional - may cause issues on some systems)
+# pyaudio==0.2.13
+
+# Development & Testing (optional)
+# pytest>=7.4.3
+# pytest-asyncio>=0.21.1
+# black>=23.11.0
+# isort>=5.12.0
