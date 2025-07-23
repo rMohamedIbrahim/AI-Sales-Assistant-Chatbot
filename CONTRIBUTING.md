@@ -5,12 +5,14 @@ Thank you for your interest in contributing to the AI-powered Two-Wheeler Sales 
 ## 🚀 Quick Start for Contributors
 
 1. **Fork the Repository**
+
    ```bash
    git clone https://github.com/rMohamedIbrahim/AI-Sales-Assistant-Chatbot.git
    cd AI-Sales-Assistant-Chatbot
    ```
 
 2. **Set Up Development Environment**
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -49,15 +51,16 @@ Thank you for your interest in contributing to the AI-powered Two-Wheeler Sales 
 - Include **docstrings** for all classes and functions
 
 ### Example Code Style:
+
 ```python
 def generate_intelligent_response(message: str, language: str = "en") -> dict:
     """
     Generate AI-powered response for user queries
-    
+
     Args:
         message (str): User input message
         language (str): Language code (default: "en")
-    
+
     Returns:
         dict: Response with message, intent, and confidence
     """
@@ -68,6 +71,7 @@ def generate_intelligent_response(message: str, language: str = "en") -> dict:
 ### Commit Message Format
 
 Use clear, descriptive commit messages:
+
 ```
 type(scope): brief description
 
@@ -87,16 +91,19 @@ test(voice): add unit tests for speech recognition
 ## 🔧 Technical Requirements
 
 ### For AI/NLP Contributions:
+
 - Experience with **FastAPI**, **Python 3.9+**
 - Knowledge of **NLP libraries** (transformers, spaCy)
 - Understanding of **multilingual text processing**
 
 ### For Frontend Contributions:
+
 - **JavaScript/HTML/CSS** proficiency
 - **Chart.js** for data visualization
 - **Speech Recognition API** experience
 
 ### For Backend Contributions:
+
 - **FastAPI** and **async programming**
 - **Database design** (MongoDB experience preferred)
 - **RESTful API** development
@@ -104,6 +111,7 @@ test(voice): add unit tests for speech recognition
 ## 🧪 Testing Guidelines
 
 ### Running Tests
+
 ```bash
 # Run all tests
 python -m pytest
@@ -116,6 +124,7 @@ python -m pytest --cov=src tests/
 ```
 
 ### Writing Tests
+
 - Write tests for all new features
 - Include edge cases and error scenarios
 - Test multilingual functionality
@@ -132,11 +141,12 @@ To add a new language:
 5. **Update documentation**
 
 Example:
+
 ```python
 # In main_simple.py
 SUPPORTED_LANGUAGES = {
     'en': 'English',
-    'hi': 'हिंदी', 
+    'hi': 'हिंदी',
     'ta': 'தமிழ்',
     'your_lang': 'Your Language'  # Add here
 }
@@ -175,12 +185,14 @@ Before submitting your PR, ensure:
 ## 🎯 Specific Contribution Areas
 
 ### High Priority
+
 - **Electric Vehicle Database**: Expand EV model information
 - **Regional Language Support**: Add local Indian languages
 - **Voice Recognition**: Improve speech-to-text accuracy
 - **Analytics Dashboard**: Enhanced business metrics
 
 ### Medium Priority
+
 - **CRM Integration**: Connect with popular CRM systems
 - **Mobile Responsiveness**: Optimize for mobile devices
 - **Caching System**: Implement response caching
@@ -196,6 +208,7 @@ Before submitting your PR, ensure:
 ## 🏆 Recognition
 
 Contributors will be:
+
 - Listed in project README
 - Mentioned in release notes
 - Invited to join core team (for significant contributions)
