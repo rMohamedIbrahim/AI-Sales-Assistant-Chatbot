@@ -1,13 +1,13 @@
 {
   "version": 2,
   "functions": {
-    "main.py": {
+    "src/main.py": {
       "runtime": "python3.9",
       "maxDuration": 30
     }
   },
   "routes": [
-    { "src": "/(.*)", "dest": "main.py" }
+    { "src": "/(.*)", "dest": "src/main.py" }
   ],
   "env": {
     "PYTHONPATH": "."
